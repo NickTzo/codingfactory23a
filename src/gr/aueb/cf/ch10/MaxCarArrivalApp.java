@@ -1,0 +1,49 @@
+package gr.aueb.cf.ch10;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class MaxCarArrivalApp {
+    public static void main(String[] args) {
+        int[][] arr = {{1012,1056},{1022,1055},{1317,1417},{1520,1810},{1210,1450},{1027,1200}};
+        int[][] transformed;
+
+        transformed = transformed(arr);
+        sortByTime(transformed);
+
+        System.out.println("Max Arricals: " + getMaxConcurrentCars(transformed));
+    }
+
+    public static int[][] transformed(int[][] arr){
+        int[][] transformed = new int[arr.length*2][2];
+
+        for(int i = 0; i < arr.length; i++){
+            transformed[i*2][0] = arr[i][0];
+            transformed[i*2][1] = 1;
+            transformed[i*2+1][0] = arr[i][1];
+            transformed[i*2+1][1] = 0;
+        }
+
+        return transformed;
+    }
+
+    public static void sortByTime(int[][] arr){
+        Arrays.sort(arr, Comparator.comparing((int[]row) -> row[0]));
+    }
+
+    public static int getMaxConcurrentCars(int[][] arr){
+        int count = 0;
+        int maxCount = 0;
+
+        for(int[]row:arr){
+            if(row[1] == 1){
+                count++;
+                        if(count > maxCount){
+                            maxCount = count;
+                        }else { //if[1] == 0;
+                            count--;
+                        }
+            }
+        }return maxCount;
+    }
+}
